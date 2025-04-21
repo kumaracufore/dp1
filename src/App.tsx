@@ -12,9 +12,6 @@ const App: React.FC = () => {
   const experiencesRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const sandParticlesRef = useRef<HTMLDivElement>(null);
-  const hieroglyphicsRef = useRef<HTMLDivElement>(null);
-  const eagleVisionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -377,6 +374,82 @@ const App: React.FC = () => {
               background-position: 100px 100px;
             }
           }
+
+          .unified-background {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-color: #C9B396FF;
+            overflow: hidden;
+          }
+
+          .ac-symbol {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 5 L95 95 L50 75 L5 95 Z" fill="none" stroke="%23FFD700" stroke-width="1" opacity="0.15"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            animation: pulseGlow 4s ease-in-out infinite;
+          }
+
+          .hieroglyphic-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><g opacity="0.1" fill="%23FFD700"><text x="20" y="40" font-size="20">𓂀</text><text x="60" y="80" font-size="15">𓃭</text><text x="100" y="120" font-size="25">𓅓</text><text x="140" y="160" font-size="18">𓆣</text><text x="180" y="40" font-size="22">𓇯</text><text x="20" y="160" font-size="20">𓈖</text><text x="140" y="80" font-size="15">𓉔</text><text x="60" y="120" font-size="25">𓊖</text></g></svg>');
+            background-size: 200px 200px;
+            opacity: 0.1;
+            animation: floatPattern 60s linear infinite;
+          }
+
+          .diagonal-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 50px,
+              rgba(255, 215, 0, 0.03) 50px,
+              rgba(255, 215, 0, 0.03) 100px
+            );
+          }
+
+          @keyframes pulseGlow {
+            0%, 100% {
+              opacity: 0.1;
+              transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+              opacity: 0.15;
+              transform: translate(-50%, -50%) scale(1.05);
+            }
+          }
+
+          @keyframes floatPattern {
+            0% {
+              background-position: 0 0;
+            }
+            100% {
+              background-position: 200px 200px;
+            }
+          }
+
+          .section-background {
+            position: relative;
+            overflow: hidden;
+          }
+
+          .section-background::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: inherit;
+            opacity: 0.7;
+          }
         `}
       </style>
       {/* Header */}
@@ -483,27 +556,10 @@ const App: React.FC = () => {
         ref={sectionRef}
         className="relative min-h-screen flex items-center justify-center overflow-hidden section-pin"
       >
-        <div className="hero-background">
-          {/* Additional decorative hieroglyphic layers */}
-          <div
-            className="absolute inset-0 z-1"
-            style={{
-              backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="10%" y="40%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="%23FFD700" opacity="0.1">𓈖</text><text x="60%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="15" fill="%23FFD700" opacity="0.1">𓉔</text><text x="30%" y="20%" dominant-baseline="middle" text-anchor="middle" font-size="25" fill="%23FFD700" opacity="0.1">𓊖</text></svg>')`,
-              backgroundSize: "120px 120px",
-              opacity: 0.1,
-              transform: "rotate(45deg)",
-              animation: "scrollHieroglyphs 80s linear infinite reverse",
-            }}
-          ></div>
-          <div
-            className="absolute inset-0 z-2"
-            style={{
-              backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="40%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="30" fill="%23FFD700" opacity="0.1">𓂀</text></svg>')`,
-              backgroundSize: "150px 150px",
-              opacity: 0.08,
-              animation: "scrollHieroglyphs 100s linear infinite",
-            }}
-          ></div>
+        <div className="unified-background">
+          <div className="diagonal-pattern"></div>
+          <div className="hieroglyphic-pattern"></div>
+          <div className="ac-symbol"></div>
         </div>
         <div
           ref={heroRef}
@@ -546,8 +602,25 @@ const App: React.FC = () => {
         </div>
       </section>
       {/* Projects Section */}
-      <section className="py-20 bg-[#f7e9d7]/80">
-        <div className="container mx-auto px-6">
+      <section className="py-20 section-background">
+        <div className="unified-background" style={{ opacity: 0.7 }}>
+          <div className="diagonal-pattern"></div>
+          <div
+            className="hieroglyphic-pattern"
+            style={{
+              transform: "rotate(180deg)",
+              opacity: 0.07,
+            }}
+          ></div>
+          <div
+            className="ac-symbol"
+            style={{
+              transform: "translate(-50%, -50%) scale(1.5)",
+              opacity: 0.05,
+            }}
+          ></div>
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-[#3B5998] mb-4">
               Featured Projects
